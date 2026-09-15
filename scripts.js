@@ -1,98 +1,9 @@
-// Consolidated interactive behaviors extracted from original index.html
-const galleryData = {
-  beds: {
-    title: 'الأسرّة',
-    images: [
-      { src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80', alt: 'سرير فاخر' },
-      { src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80', alt: 'تصميم سرير فاخر' }
-    ]
-  },
-  wardrobes: {
-    title: 'الأدولاب',
-    images: [
-      { src: 'images/wardrobes/1.jpg', alt: 'دولاب عصري' },
-      { src: 'images/wardrobes/2.jpg', alt: 'دولاب فاخر' }
-    ]
-  },
-  dining: {
-    title: 'غرف السفرة',
-    images: [
-      { src: 'images/dining/1.jpg', alt: 'غرفة سفرة راقية' },
-      { src: 'images/dining/2.jpg', alt: 'طاولة سفرة فاخرة' }
-    ]
-  },
-  salon: {
-    title: 'الصالون',
-    images: [
-      { src: 'images/salon/1.jpg', alt: 'صالون كلاسيكي' },
-      { src: 'images/salon/2.jpg', alt: 'صالون أنيق' }
-    ]
-  },
-  library: {
-    title: 'المكتبات',
-    images: [
-      { src: 'images/library/1.jpg', alt: 'مكتبة فاخرة' },
-      { src: 'images/library/2.jpg', alt: 'تصميم مكتبة راقي' }
-    ]
-  },
-  sectional: {
-    title: 'الركائن',
-    images: [
-      { src: 'images/sectional/1.jpg', alt: 'ركنة مريحة' },
-      { src: 'images/sectional/2.jpg', alt: 'ركنة فاخرة' }
-    ]
-  },
-  'coffee-table': {
-    title: 'الطاولات',
-    images: [
-      { src: 'images/coffee-table/1.jpg', alt: 'طاولة قهوة راقية' },
-      { src: 'images/coffee-table/2.jpg', alt: 'طاولة قهوة حديثة' }
-    ]
-  },
-  'shoe-cabinet': {
-    title: 'الجزامة',
-    images: [
-      { src: 'images/shoe-cabinet/1.jpg', alt: 'جزامة أنيقة' },
-      { src: 'images/shoe-cabinet/2.jpg', alt: 'جزامة فاخرة' }
-    ]
-  },
-  vanity: {
-    title: 'التسريحة',
-    images: [
-      { src: 'images/vanity/1.jpg', alt: 'تسريحة فاخرة' },
-      { src: 'images/vanity/2.jpg', alt: 'تسريحة أنيقة' }
-    ]
-  },
-  'vanity-chair': {
-    title: 'كراسي التسريحة',
-    images: [
-      { src: 'images/vanity-chair/1.jpg', alt: 'كرسي تسريحة فاخر' },
-      { src: 'images/vanity-chair/2.jpg', alt: 'كرسي تسريحة عصري' }
-    ]
-  },
-  puff: {
-    title: 'البف',
-    images: [
-      { src: 'images/puff/1.jpg', alt: 'بف فخم' },
-      { src: 'images/puff/2.jpg', alt: 'بف عصري' }
-    ]
-  },
-  chiffonier: {
-    title: 'الشيفونيرة',
-    images: [
-      { src: 'images/chiffonier/1.jpg', alt: 'شفونيرة فاخرة' },
-      { src: 'images/chiffonier/2.jpg', alt: 'شفونيرة أنيقة' }
-    ]
-  },
-  commode: {
-    title: 'الكومود',
-    images: [
-      { src: 'images/commode/1.jpg', alt: 'كومود فاخر' },
-      { src: 'images/commode/2.jpg', alt: 'كومود عصري' }
-    ]
-  }
-};
+// Dynamic Gallery Data - Fetched from API
+let galleryData = {};
+let categoriesById = {};
+let categoriesByKey = {};
 
+// Keep category map for label matching
 const categoryMap = {
   سرير: 'beds',
   دولاب: 'wardrobes',
@@ -111,32 +22,128 @@ const categoryMap = {
   كومود: 'commode'
 };
 
+// Fetch categories and build the data structure
+async function initializeGalleryData() {
+  Object.entries(categoryMap).forEach(([label, key]) => {
+    if (!galleryData[key]) {
+      galleryData[key] = { id: null, title: label, images: [] };
+    }
+  });
+
+  try {
+    const response = await fetch('/api/public/categories');
+    if (!response.ok) throw new Error('Failed to load categories');
+    const categories = await response.json();
+    await Promise.all(categories.map(async category => {
+      const categoryId = category.id;
+      const key = category.key;
+      categoriesById[categoryId] = category;
+      categoriesByKey[key] = category;
+      galleryData[key] = { id: categoryId, title: category.name_ar || category.name, description: '', images: [] };
+      await loadCategoryImages(categoryId);
+    }));
+  } catch (error) {
+    console.error('Error loading catalog data:', error);
+  }
+}
+
+// Fetch images for a specific category
+async function loadCategoryImages(categoryId) {
+  try {
+    const response = await fetch(`/api/public/categories/${categoryId}/images`);
+    if (!response.ok) throw new Error('Failed to load images');
+    const images = await response.json();
+    const category = categoriesById[categoryId];
+    if (category && galleryData[category.key]) {
+      galleryData[category.key].images = images.map(image => ({
+        src: image.public_url || image.cloudinary_url,
+        alt: image.alt_text || category.name_ar || category.name
+      }));
+    }
+    return images;
+  } catch (error) {
+    console.error('Error loading category images:', error);
+    return [];
+  }
+}
+
 let currentGalleryCategory = null;
 let currentGalleryIndex = 0;
 let galleryImages = [];
 
-function openGallery(category) {
+function normalizeImageSource(src) {
+  if (!src) return '';
+  if (!src.includes('drive.google.com')) return src;
+
+  const fileIdMatch = src.match(/\/d\/([^/]+)/) || src.match(/[?&]id=([^&]+)/);
+  if (fileIdMatch?.[1]) {
+    return `https://drive.google.com/uc?export=view&id=${fileIdMatch[1]}`;
+  }
+
+  return src;
+}
+
+function applySectionImages() {
+  document.querySelectorAll('#catalog .group').forEach((card) => {
+    const label = card.querySelector('span')?.textContent.trim();
+    const category = categoryMap[label] || 'beds';
+    const image = card.querySelector('img');
+    if (!image) return;
+
+    const firstImage = galleryData[category]?.images?.[0];
+    if (firstImage) {
+      image.src = firstImage.src;
+      image.alt = firstImage.alt;
+    }
+  });
+}
+
+function openGallery(category, fallbackImage) {
   const data = galleryData[category];
   if (!data) return;
 
   currentGalleryCategory = category;
-  galleryImages = data.images;
+  galleryImages = (data.images || []).map((item) => ({
+    ...item,
+    src: normalizeImageSource(item.src)
+  }));
+  if (!galleryImages.length && fallbackImage) {
+    galleryImages = [{ src: normalizeImageSource(fallbackImage.src), alt: fallbackImage.alt }];
+  }
   currentGalleryIndex = 0;
 
   const modal = document.getElementById('galleryModal');
   const title = document.getElementById('galleryModalTitle');
   const subtitle = document.getElementById('galleryModalSubtitle');
-  const image = document.getElementById('galleryModalImage');
   const counter = document.getElementById('galleryModalCounter');
 
   title.textContent = data.title;
-  subtitle.textContent = 'معرض الصور الخاص بهذه الفئة';
+  subtitle.textContent = data.description || 'معرض الصور الخاص بهذه الفئة';
   renderGalleryImage();
   counter.textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
 
   modal.hidden = false;
   modal.setAttribute('aria-hidden', 'false');
   document.body.classList.add('modal-open');
+}
+
+function renderGalleryThumbnails() {
+  const thumbs = document.getElementById('galleryModalThumbs');
+  if (!thumbs) return;
+
+  thumbs.innerHTML = '';
+  galleryImages.forEach((item, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `gallery-modal__thumb${index === currentGalleryIndex ? ' is-active' : ''}`;
+    button.setAttribute('aria-label', `صورة ${index + 1}`);
+    button.innerHTML = `<img src="${item.src}" alt="${item.alt || ''}" loading="lazy" />`;
+    button.addEventListener('click', () => {
+      currentGalleryIndex = index;
+      renderGalleryImage();
+    });
+    thumbs.appendChild(button);
+  });
 }
 
 function renderGalleryImage() {
@@ -154,6 +161,7 @@ function renderGalleryImage() {
   }, 170);
 
   counter.textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+  renderGalleryThumbnails();
 }
 
 function closeGallery() {
@@ -212,7 +220,10 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, observerOptions);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Initialize gallery data from API
+  await initializeGalleryData();
+
   document.querySelectorAll('#catalog .group').forEach((el, index) => {
     el.classList.add('reveal-init', 'catalog-card');
     el.style.transitionDelay = `${index * 50}ms`;
@@ -222,17 +233,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const label = el.querySelector('span')?.textContent.trim();
     const category = categoryMap[label] || 'beds';
     el.dataset.category = category;
+    const cardImage = el.querySelector('img');
+    const fallbackImage = cardImage ? {
+      src: cardImage.src,
+      alt: cardImage.alt || label
+    } : null;
 
-    el.addEventListener('click', () => openGallery(category));
-    el.addEventListener('keydown', (event) => {
+    el.addEventListener('click', async () => {
+      // Load images for this category if not already cached
+      const data = galleryData[category];
+      if (data && data.images.length === 0 && data.id) {
+        await loadCategoryImages(data.id);
+      }
+      openGallery(category, fallbackImage);
+    });
+    el.addEventListener('keydown', async (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        openGallery(category);
+        // Load images for this category if not already cached
+        const data = galleryData[category];
+        if (data && data.images.length === 0 && data.id) {
+          await loadCategoryImages(data.id);
+        }
+        openGallery(category, fallbackImage);
       }
     });
 
     observer.observe(el);
   });
+
+  applySectionImages();
 
   document.querySelectorAll('[data-close-modal]').forEach((element) => {
     element.addEventListener('click', closeGallery);
@@ -256,6 +286,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const category = params.get('category');
   if (category && galleryData[category]) {
+    if (galleryData[category].images.length === 0 && galleryData[category].id) {
+      await loadCategoryImages(galleryData[category].id);
+    }
     openGallery(category);
   }
 });
