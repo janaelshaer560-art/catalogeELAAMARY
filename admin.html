@@ -9,7 +9,8 @@
   <style>
     .admin-shell{min-height:100vh;background:#131313;color:#e5e2e1;font-family:Manrope, sans-serif}
     .admin-panel{background:#1d1d1d;border:1px solid rgba(252,207,62,.18);border-radius:14px}
-    .admin-input{width:100%;background:#111;color:#fff;border:1px solid #494949;border-radius:8px;padding:12px}
+    .admin-input{width:100%;background:#f7f5ef;color:#111;border:1px solid #494949;border-radius:8px;padding:12px;caret-color:#111}
+    .admin-input::placeholder{color:#555}
     .admin-button{background:#fccf3e;color:#131313;border:0;border-radius:8px;padding:11px 18px;font-weight:700;cursor:pointer}
     .admin-button:disabled{opacity:.55;cursor:wait}
     .admin-muted{color:#a8a29e}
@@ -26,13 +27,17 @@
         <label class="block">كلمة المرور<input id="password" class="admin-input mt-2" type="password" required autocomplete="current-password"></label>
         <button class="admin-button w-full" type="submit">دخول</button>
         <p id="loginError" class="text-red-400 text-sm"></p>
+        <a class="admin-button block text-center" href="/">العودة إلى الكتالوج</a>
       </form>
     </section>
 
     <section id="dashboardView" class="hidden-view">
       <header class="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div><p class="admin-muted text-sm">إدارة الصور</p><h1 class="text-3xl text-primary font-bold">كتالوج العمارى</h1></div>
-        <button id="logoutButton" class="admin-button">تسجيل الخروج</button>
+        <div class="flex flex-wrap items-center gap-3">
+          <a class="admin-button block text-center" href="/">العودة إلى الكتالوج</a>
+          <button id="logoutButton" class="admin-button">تسجيل الخروج</button>
+        </div>
       </header>
       <section class="admin-panel p-6 mb-6">
         <h2 class="text-xl font-bold mb-4">إضافة صور للكتالوج</h2>
@@ -106,7 +111,16 @@
     $('uploadButton').disabled = false;
     if (redirectExpired(response)) return;
     if (!response.ok) { const data = await response.json(); return setStatus(data.error || 'فشل رفع الصور', true); }
-    $('imageInput').value = ''; $('preview').innerHTML = ''; await loadImages(); setStatus('تم حفظ الصور بنجاح');
+    const uploadedImages = await response.json();
+    $('imageInput').value = ''; $('preview').innerHTML = '';
+    await loadImages();
+    try {
+      localStorage.setItem('catalog-updated', `${Date.now()}`);
+      setStatus(`تم حفظ ${uploadedImages.length} صورة، والكتالوج اتحدّث`);
+    } catch (error) {
+      console.error('Images saved, but the catalog refresh signal failed:', error);
+      setStatus('تم حفظ الصور، أعد تحميل صفحة الكتالوج لتظهر الصور الجديدة', true);
+    }
   });
   $('logoutButton').addEventListener('click', async () => { await fetch('/api/admin/logout', { method: 'POST' }); showLogin(); });
   fetch('/api/admin/session').then(async response => { if (response.ok) { showDashboard(); await loadCategories(); } else showLogin(); });

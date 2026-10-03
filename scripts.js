@@ -2,6 +2,7 @@
 let galleryData = {};
 let categoriesById = {};
 let categoriesByKey = {};
+let galleryReady = false;
 
 // Keep category map for label matching
 const categoryMap = {
@@ -42,8 +43,11 @@ async function initializeGalleryData() {
       galleryData[key] = { id: categoryId, title: category.name_ar || category.name, description: '', images: [] };
       await loadCategoryImages(categoryId);
     }));
+    galleryReady = true;
+    return true;
   } catch (error) {
     console.error('Error loading catalog data:', error);
+    return false;
   }
 }
 
@@ -85,10 +89,10 @@ function normalizeImageSource(src) {
 
 function applySectionImages() {
   document.querySelectorAll('#catalog .group').forEach((card) => {
-    const label = card.querySelector('span')?.textContent.trim();
-    const category = categoryMap[label] || 'beds';
+    const label = card.querySelector(':scope > span')?.textContent.trim();
+    const category = categoryMap[label];
     const image = card.querySelector('img');
-    if (!image) return;
+    if (!image || !category) return;
 
     const firstImage = galleryData[category]?.images?.[0];
     if (firstImage) {
@@ -97,6 +101,29 @@ function applySectionImages() {
     }
   });
 }
+
+async function refreshCatalog() {
+  if (!galleryReady) return;
+  if (!await initializeGalleryData()) return;
+  applySectionImages();
+
+  const modal = document.getElementById('galleryModal');
+  const data = galleryData[currentGalleryCategory];
+  if (modal && !modal.hidden && data?.images.length) {
+    galleryImages = data.images.map((item) => ({
+      ...item,
+      src: normalizeImageSource(item.src)
+    }));
+    currentGalleryIndex = Math.min(currentGalleryIndex, galleryImages.length - 1);
+    renderGalleryImage();
+  }
+}
+
+window.addEventListener('storage', (event) => {
+  if (event.key === 'catalog-updated') refreshCatalog();
+});
+
+window.addEventListener('focus', refreshCatalog);
 
 function openGallery(category, fallbackImage) {
   const data = galleryData[category];
@@ -230,8 +257,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     el.setAttribute('role', 'button');
     el.setAttribute('tabindex', '0');
 
-    const label = el.querySelector('span')?.textContent.trim();
-    const category = categoryMap[label] || 'beds';
+    const label = el.querySelector(':scope > span')?.textContent.trim();
+    const category = categoryMap[label];
+    if (!category) {
+      console.error(`No catalog category is configured for "${label || 'unnamed card'}".`);
+      return;
+    }
     el.dataset.category = category;
     const cardImage = el.querySelector('img');
     const fallbackImage = cardImage ? {

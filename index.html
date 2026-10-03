@@ -10,7 +10,8 @@
 
   <!-- Tailwind (keeps CDN for quick prototyping) -->
   <script id="tailwind-config">
-    tailwind.config = {
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = {
       darkMode: "class",
       theme: { extend: {/* minimal config copied from original for consistency */} }
     };
@@ -18,7 +19,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
   <!-- Project styles -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=3">
   <meta name="color-scheme" content="dark">
   <style>/* tiny inline fallback for older browsers */
     .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
@@ -32,7 +33,7 @@
       <div class="hidden md:flex items-center gap-10 font-body-lg text-body-lg tracking-wide">
         <a class="text-primary border-b-2 border-primary pb-1 font-bold" href="#">الرئيسية</a>
         
-        <a class="text-on-surface-variant hover:text-primary" href="#about">عن الشركة</a>
+        <a class="text-on-surface-variant hover:text-primary" href="#catalog">الكتالوج</a>
       </div>
       <div class="flex-shrink-100">
         <img alt="Elammary Furniture Logo" class="h-16 w-auto object-contain drop-shadow-gold" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0PUbs-TQBCkF6vD4Beei3vdf_wfUa2KfKCgzVbFbMGT3X48qam0thPWAOfyUkv1_PrOP9po-HxGVTRtqX8BtZrJJ0KTGLbVoHTgmWSTrCZKqQp9iSPDrbX9hCwhm5lTZSqSuqX61bbq6aL49ATtGY_CAmktILSzCDNjEHzmg0_JEoH7Fg_dpfMheFG0Ane0dPqTxtTMvg57LQg3of39mf8_ajK9AiSBE3EN8dbKALQ0mXQK81s8Upj32BSL2umKYZYnA"/>
@@ -124,7 +125,7 @@
       </div>
 
       <!-- 6. Dining Room (With special sub-options indicator) -->
-      <div class="flex flex-col items-center group cursor-pointer col-span-2 md:col-span-1">
+      <div class="flex flex-col items-center group cursor-pointer">
         <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-primary/40 flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
           <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high relative">
             <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A grand dining table with ten chairs, set with premium glassware and candles. The lighting is low and sophisticated, highlighting the polished wooden surface and gold trimmings." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJfIRWmjaebCsO4ECyQliUtFVvMu9I4743rlSA-0kAK1_imExhkE3FMKBM77dhndsDYxJ1VFzlLIMrTmSQHDw3U3RnhHHB8X8S4yDmpxrU0hzBFDSxkdFXfSipqDF2_7fxG1xDFSSKB_IbH2SyAgsU3ynaKeeYqByIq3GHal-M0aI92WgYxCPQyAHIDhox-nmUHBfGOxg3i27WNvpUjamj-Ygw6cVhh0FY0v5PCl917_xrn7Pedhfd8g"/>
@@ -254,13 +255,13 @@
       </div>
       <div class="gallery-modal__stage">
         <button type="button" class="gallery-modal__nav gallery-modal__nav--prev" data-nav="prev" aria-label="السابق">
-          <span class="material-symbols-outlined">chevron_left</span>
+          <span class="material-symbols-outlined">chevron_right</span>
         </button>
         <div class="gallery-modal__frame">
           <img id="galleryModalImage" class="gallery-modal__image" src="" alt="" />
         </div>
         <button type="button" class="gallery-modal__nav gallery-modal__nav--next" data-nav="next" aria-label="التالي">
-          <span class="material-symbols-outlined">chevron_right</span>
+          <span class="material-symbols-outlined">chevron_left</span>
         </button>
       </div>
       <div class="gallery-modal__footer">
@@ -276,9 +277,10 @@
       <a href="http://localhost:3000/admin/login" aria-label="دخول الإدارة" title="دخول الإدارة" class="text-on-surface-variant hover:text-primary transition-colors">
         <span class="material-symbols-outlined text-xl">lock</span>
       </a>
+    </div>
   </footer>
 
   <!-- Project scripts -->
-  <script src="scripts.js"></script>
+  <script src="scripts.js?v=3"></script>
 </body>
 </html>

@@ -57,12 +57,35 @@ router.post('/categories/:categoryId/images', requireAdmin, upload.array('images
   const { data: category, error: categoryError } = await supabase.from('categories').select('*').eq('id', req.params.categoryId).single();
   if (categoryError || !category) return res.status(404).json({ error: 'Category not found' });
 
-  let { data: item } = await supabase.from('items').select('id').eq('category_id', category.id).limit(1).maybeSingle();
+  const { data: existingItem, error: itemError } = await supabase
+    .from('items')
+    .select('id')
+    .eq('category_id', category.id)
+    .eq('is_published', true)
+    .limit(1)
+    .maybeSingle();
+  if (itemError) return res.status(500).json({ error: itemError.message });
+
+  let item = existingItem;
   if (!item) {
-    const result = await supabase.from('items').insert({ category_id: category.id, name: category.name_ar }).select('id').single();
+    const result = await supabase
+      .from('items')
+      .insert({ category_id: category.id, name: category.name_ar, is_published: true })
+      .select('id')
+      .single();
     if (result.error) return res.status(400).json({ error: result.error.message });
     item = result.data;
   }
+
+  const { data: firstImage, error: imageOrderError } = await supabase
+    .from('item_images')
+    .select('sort_order')
+    .eq('item_id', item.id)
+    .order('sort_order', { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  if (imageOrderError) return res.status(500).json({ error: imageOrderError.message });
+  const firstSortOrder = Math.min(firstImage?.sort_order ?? 0, 0) - req.files.length;
 
   const rows = [];
   for (const [index, file] of req.files.entries()) {
@@ -70,7 +93,7 @@ router.post('/categories/:categoryId/images', requireAdmin, upload.array('images
     const { error: uploadError } = await supabase.storage.from('catalog-images').upload(storagePath, file.buffer, { contentType: file.mimetype });
     if (uploadError) return res.status(400).json({ error: uploadError.message });
     const { data: url } = supabase.storage.from('catalog-images').getPublicUrl(storagePath);
-    rows.push({ item_id: item.id, storage_path: storagePath, public_url: url.publicUrl, alt_text: category.name_ar, sort_order: index });
+    rows.push({ item_id: item.id, storage_path: storagePath, public_url: url.publicUrl, alt_text: category.name_ar, sort_order: firstSortOrder + index });
   }
   const { data, error } = await supabase.from('item_images').insert(rows).select();
   if (error) return res.status(400).json({ error: error.message });

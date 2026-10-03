@@ -2,6 +2,11 @@ const express = require('express');
 const supabase = require('../db');
 const router = express.Router();
 
+router.use((_req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});
+
 router.get('/categories', async (req, res) => {
   const { data, error } = await supabase.from('categories').select('*').order('id');
   if (error) return res.status(500).json({ error: error.message });
