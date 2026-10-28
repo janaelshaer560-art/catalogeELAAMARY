@@ -3,284 +3,111 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark">
   <title>العمارى للأثاث | Elammary Furniture</title>
-  <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Arabic:wght@400;600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-  <!-- Tailwind (keeps CDN for quick prototyping) -->
   <script id="tailwind-config">
     window.tailwind = window.tailwind || {};
-    window.tailwind.config = {
-      darkMode: "class",
-      theme: { extend: {/* minimal config copied from original for consistency */} }
-    };
+    window.tailwind.config = { darkMode: "class", theme: { extend: {} } };
   </script>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-  <!-- Project styles -->
-  <link rel="stylesheet" href="styles.css?v=3">
-  <meta name="color-scheme" content="dark">
-  <style>/* tiny inline fallback for older browsers */
-    .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
-  </style>
+  <link rel="stylesheet" href="styles.css?v=4">
+  <style>.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}</style>
 </head>
 <body class="bg-background text-on-surface font-body-md selection:bg-primary/30">
-
-  <!-- Top Navigation Shell -->
   <nav class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/40 shadow-[0_10px_40px_rgba(252,207,62,0.08)] h-20 transition-all duration-500">
     <div class="max-w-container-max mx-auto px-8 md:px-16 flex items-center justify-between h-full">
       <div class="hidden md:flex items-center gap-10 font-body-lg text-body-lg tracking-wide">
         <a class="text-primary border-b-2 border-primary pb-1 font-bold" href="#">الرئيسية</a>
-        
-        <a class="text-on-surface-variant hover:text-primary" href="#catalog">الكتالوج</a>
+        <a class="text-on-surface-variant hover:text-primary" href="#catalog">الأقسام</a>
       </div>
-      <div class="flex-shrink-100">
-        <img alt="Elammary Furniture Logo" class="h-16 w-auto object-contain drop-shadow-gold" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0PUbs-TQBCkF6vD4Beei3vdf_wfUa2KfKCgzVbFbMGT3X48qam0thPWAOfyUkv1_PrOP9po-HxGVTRtqX8BtZrJJ0KTGLbVoHTgmWSTrCZKqQp9iSPDrbX9hCwhm5lTZSqSuqX61bbq6aL49ATtGY_CAmktILSzCDNjEHzmg0_JEoH7Fg_dpfMheFG0Ane0dPqTxtTMvg57LQg3of39mf8_ajK9AiSBE3EN8dbKALQ0mXQK81s8Upj32BSL2umKYZYnA"/>
-      </div>
-      <div class="flex items-center gap-6">
-        
-        <button class="md:hidden text-primary"><span class="material-symbols-outlined text-4xl">menu</span></button>
-      </div>
+      <a class="flex-shrink-100" href="#" aria-label="العودة للرئيسية">
+        <img alt="شعار العمارى للأثاث" class="h-16 w-auto object-contain drop-shadow-gold" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0PUbs-TQBCkF6vD4Beei3vdf_wfUa2KfKCgzVbFbMGT3X48qam0thPWAOfyUkv1_PrOP9po-HxGVTRtqX8BtZrJJ0KTGLbVoHTgmWSTrCZKqQp9iSPDrbX9hCwhm5lTZSqSuqX61bbq6aL49ATtGY_CAmktILSzCDNjEHzmg0_JEoH7Fg_dpfMheFG0Ane0dPqTxtTMvg57LQg3of39mf8_ajK9AiSBE3EN8dbKALQ0mXQK81s8Upj32BSL2umKYZYnA"/>
+      </a>
+      <a class="md:hidden text-primary" href="#catalog" aria-label="تصفح الأقسام">
+        <span class="material-symbols-outlined text-4xl" aria-hidden="true">grid_view</span>
+      </a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <header class="relative min-h-screen w-full overflow-hidden flex items-center pt-20">
     <div class="absolute inset-0 z-0">
       <div class="absolute inset-0 hero-overlay z-10"></div>
-      <div class="w-full h-full bg-cover bg-center animate-subtle-zoom" style="background-image: url('elaamaryph/backgr.jpg')"></div>
+      <div class="w-full h-full bg-cover bg-center animate-subtle-zoom" style="background-image:url('elaamaryph/backgr.jpg')"></div>
     </div>
     <div class="relative z-20 max-w-container-max mx-auto px-gutter w-full text-right">
       <div class="max-w-3xl flex flex-col items-start md:items-end">
-        
         <h1 class="font-display-lg text-display-lg md:text-[76px] md:leading-[1.1] text-on-surface mb-6">
           مرحباً بكم في <span class="text-gradient-gold block md:inline">العمارى للأثاث</span>
         </h1>
         <p class="font-body-lg text-body-lg md:text-[24px] text-on-surface-variant max-w-xl leading-relaxed mb-10 border-r-4 border-primary pr-8">
           لأن الجودة تُصنع… والثقة تُكتسب
         </p>
-        <div class="flex flex-wrap gap-6 items-center">
-          <a class="group btn-primary-gold px-12 py-5 rounded-lg flex items-center gap-3 text-black font-bold text-body-lg gold-glow" href="#catalog">
-    تصفح الكتالوج
-    <span class="material-symbols-outlined transition-transform group-hover:translate-x-[-10px]">west</span>
-</a>
-         
-        </div>
+        <a class="group btn-primary-gold px-12 py-5 rounded-lg flex items-center gap-3 text-black font-bold text-body-lg gold-glow" href="#catalog">
+          تصفح الكتالوج
+          <span class="material-symbols-outlined transition-transform group-hover:translate-x-[-10px]" aria-hidden="true">west</span>
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- Catalog / Bento Grid Showcase Section -->
-  <main id="catalog" class="pt-12 pb-section-padding px-gutter max-w-container-max mx-auto">
-    <section class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-8 gap-y-12">
-      <!-- 1. Bed -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A luxurious dark velvet king-sized bed with golden frame details in a moody, high-end bedroom with atmospheric lighting. The design reflects premium craftsmanship and elegance typical of the Elammary Furniture aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWC-OTLePxu_QZlOLGolfXVW8aMV6yZt9aCjaEaoL1hNgdLMmbMA_Yty79BPicdg50n2zurOvgxE2p_ijB8jdTjY6x6s48lM73AtYrhcbbJDuJgLTIMEJzNQZI72g5fUanb4z58i_zbz7dVfb_yR-7pxuZ9Q8dEKaremMGFPpAODmPVQOjB7rkh3ulTrpRmKp29jDiXlbBFUofkOFABdl6o-EaNLvHUDVzacHhH1aG2RUKgLWDVkwvaQ"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">سرير</span>
+  <main id="catalog" class="catalog-main px-gutter max-w-container-max mx-auto" tabindex="-1">
+    <div id="catalogPage" class="catalog-page">
+      <div class="catalog-page__top">
+        <button id="catalogBack" class="catalog-back" type="button" hidden>
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          رجوع
+        </button>
+        <nav id="catalogBreadcrumbs" class="catalog-breadcrumbs" aria-label="مسار الكتالوج"></nav>
+        <button id="catalogRefresh" class="catalog-refresh" type="button">
+          <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
+          تحديث الصور
+        </button>
       </div>
-
-      <!-- 2. Wardrobe -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A modern sliding door wardrobe with integrated warm LED lighting and sleek metallic gold handles. The background is a dark charcoal wall, emphasizing a cinematic luxury feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdFCuqGC8F1IIswPtBUsDDlEV34PTSPfJoNwMl3ogedZiPkm7LXCuP68OohDS29LbBqdcclcFYIXUeinB5d0DuDy0pWXSGwIV2k8QVoJRQlNNQJDw8VqIU0yoAVcWUZ9hFWuYP-8U9r1gBc8uMNgeocPKZKOaRcYemp_q4ouLpoEZWevOUiXW6Zg4OiKoAsSZ5FamxtBIUHsoREukaYjgHQyGQEyA-mKS3cJhfDg0QTV2jMiOhmSyOHw"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">دولاب</span>
-      </div>
-
-      <!-- 3. Wardrobe Divisions -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Close up detail of internal wardrobe organizational compartments, featuring leather-lined drawers for watches and accessories with gold accents. Soft spot lighting creates a high-end department store feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgHUQ3-_NxqQmhdVJBykW8kke_Lc9qbJJGkYelEgrrwfhn124DjwxoLf-F-1B1noFaMSuqFx7ZLLBbdKVlWZZEGXWJWQgOe1HZK10BseYsV1kb7kpXc3VbaVOj53LLhA-AAe2XbIAomOOLqadxnxyjOX_LJ76YIeT_NgsU5bGG3tn_1RxLAhioPXg3gsDW_rumbJyRPX0oFu6M-aIQPLkh9MN18BfQ9OaOVnpc1ucIdtqOmsYXz18_qw"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">تقسيمات دولاب</span>
-      </div>
-
-      <!-- 4. Living Room Set -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A complete designer living room set with a deep emerald green sofa, marble side tables, and gold floor lamps. The scene is illuminated by soft natural light hitting the textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU9tGd7dSOciQlV8rluEReyGPuOZnbW3q-oFdpuIYxTqIfaNnvNNOHhuj5Le9RZ5Tz5Hi9PyEi1WbWioa7IerY4keNVtzaYdIN2ORURE4-4smb3NRyB_kjIJgxFkPK8ot_LiAvOXXnv8BnGEsHZ1kP05IV_rwZcA-bfLl05pXZCNdlgBhB3eSrosqu_8zNvlD-GRBeTkIpwZzkZ6VrsX7LjC8skH-GVuPZAROnelx-JHUrUdnk6bYXHg"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">انتريه</span>
-      </div>
-
-      <!-- 5. Salon -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Exquisite French-style classic salon suite with hand-carved gold leaf woodwork and premium silk upholstery. The setting is a grand mansion hall with ambient warm lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhG_NAWtemjRsBLVI5taTbV5nASphTdibztxvg7e8l9NgJ9stqEFifdX0c4ApkePmnV6XjbLiKK2UnXuq_NKdlh665aONM1MSW7uQHb-PHlm0pwtA32pSK6XxJlMNU_iqfY9oCFzZbhoPPqorPMGEdn9BPxjyARwWd4P93MQwKf4hUX3MrImfP-0clm52mv7ORYN8QMfBlsnLgEyMu1rli3sm4qcJBy6M3eH2IKsgBxvCqao62gvtfoA"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">صالون</span>
-      </div>
-
-      <!-- 6. Dining Room (With special sub-options indicator) -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-primary/40 flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high relative">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A grand dining table with ten chairs, set with premium glassware and candles. The lighting is low and sophisticated, highlighting the polished wooden surface and gold trimmings." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJfIRWmjaebCsO4ECyQliUtFVvMu9I4743rlSA-0kAK1_imExhkE3FMKBM77dhndsDYxJ1VFzlLIMrTmSQHDw3U3RnhHHB8X8S4yDmpxrU0hzBFDSxkdFXfSipqDF2_7fxG1xDFSSKB_IbH2SyAgsU3ynaKeeYqByIq3GHal-M0aI92WgYxCPQyAHIDhox-nmUHBfGOxg3i27WNvpUjamj-Ygw6cVhh0FY0v5PCl917_xrn7Pedhfd8g"/>
-            <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-[10px] text-white opacity-0 group-hover:opacity-100 transition-opacity">
-              <span>نيش • بوفيه</span>
-              <span>كرسي • ترابيزة</span>
-            </div>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors text-center">غرفة سفرة</span>
-      </div>
-
-      <!-- 7. Sectional Sofa -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Large modular sectional sofa in charcoal grey fabric with gold base accents, arranged in a spacious modern loft. Soft morning light creates a cozy yet luxurious atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXOY-tIHZcmuBWxweuLM7bTexKDj-11Td1ntrrLIJGgKTsdhvrLTo92ghRzMb8SWZ82khp2ElLx0SYYeP2ilxUeTFY1ZpcncXT0zlOS1C-aq5fGmYJmR5hfxtE4bR5kzZy1Rlmh4Pg42UYFBWeyV2RL0YxPsa0hOUqWl8TvIEWUMsQoijfmEng5V_HrldtKg01WWX0lYg4_RhWrKI20YHFPIyRaQyydTVbn0Bm0MZ80xh9-oVB-MGUIw"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">ركنة</span>
-      </div>
-
-      <!-- 8. Coffee Table -->
-     <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-         <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A sculptural coffee table set made of white marble and brass, resting on a plush high-pile rug in a dark interior. Professional photography focusing on material contrast and luxury finish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVm_s2MgVztPVNw2YuARrfk6EdA3J3IpbesbNOigVxme9wUh1jhKAEW4PdR7DvB87mXk8_GSUIpMmk20XIZS-fijLvZH9lWpKo37O6DZQgzEtnc_leyglJiLXWxgSqSBMrc_ZXtzbHIxHSla7J_MRw6GDWbV2J_nTFlRmdaUjOJjyi4KlrPk4-k6xizEWxK7IR8s5vt5gR6pdiyFfa9sDskzjyiQPOg00hmjzQypCYyOD3bDzH4rf6aA"/>
-          </div>
-       </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">كوفي تيبل</span>
-      </div>
-
-      <!-- 9. Library -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Floor-to-ceiling built-in home library with dark wood shelves and integrated gold track lighting. The mood is intellectual and prestigious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmWtCxVGxoJ2Usi0eHlGn0rg7awGP6gBBAg6K2M-S3jkBe7_aL3BLI9c-qJDcYvivVLEBt8ATFNelXbKnxeNcfrv9_9bh3nvliirp6Yo1kz099KKwjvWA9ZFFjehe3U5N3xcOlXxHTcFtnvNl_f3IL89aosnepx44KsMLi4ySr-vTjHTjY448C14XTm4v5ZAp7BA78WMuPuDPPePkbCym-phV7rRG893l8b7go1BEc8cCQAJXrxaFw8A"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">مكتبة</span>
-      </div>
-
-      <!-- 10. Shoe Cabinet -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Elegant entrance hall shoe cabinet with a mirrored top and champagne gold handles. Minimalist decor items like a small vase of flowers sit on top." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvXY6pNEITQa0ThKAo7PUeYFpVr9dCOSbX2vGHl7gDyFYytEjd9NE4Kt-DKx5MYOAamDA90bvSG4UAOC8CMGGqNxSjYovJpn6L2NkrYAgZMmADlRBE6TKkRC90nOIf_0GQHNpwR8dMC3GBs7OEiwxmlZEOmWmzjZ1bjCnwaj5RrCHaBWjSKokie06KjVSNSrP55WsVJ_R8gtJB95QXuTfh_gKNXxY9CgwVJtcK1ayMS8g8lhgC24PAMQ"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">جزامة</span>
-      </div>
-
-      <!-- 11. Puff -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Luxurious tufted velvet ottoman puff with a golden ring base in a soft beige color. The texture of the fabric is highlighted by a side light source." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWKlcftpuaixwgrFZvHdfOWXn37cNF408VuVSGvws7lkb907_gP_EoiB2BCV_JxlpetoYs7S9Lo-FfWDGexNA3Z2SPBpni3ixAwcqGlKKafOwR-oNYwyekwv9wjrARBlHiWKTw-rBBwp9r7kCytnyO4MpqmgidOV_9ud4FPnQEQPhsdx3e_QgaoBO3MF6AR3A0gbfnw_BAli9XpfflphUv-uRkyLDHl2hL_KNzUxwhBBzE4ecUAphCQg"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">بف</span>
-      </div>
-
-      <!-- 12. Vanity Chair -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Chic vanity chair with curved back and slender gold legs, upholstered in ivory bouclé fabric. High-end boutique furniture style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpVGHdweDlbDaJAeoFXor056sbAeQxmevRcqjvhP3YH6npMQ54PJo_8vhNXLnYey2v61RkG_F9teRx4s_CJqqCVPlnKKek833s-wZ4bQawmxyY2Arctd16XY06v_dWUYinhv_agzVs_F0lDZ6VgVSRW5eUfVc57bN4hboTXxWhGUJHGrPUj1QmZmBFsGCfWweCusFH-TuZMb9CquF7_HVKjm-9BcduWEi4AMXV9Qke0WxvA4AQL73SCQ"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">كرسي تسريحة</span>
-      </div>
-
-      <!-- 13. Vanity -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A Hollywood-style vanity table with a massive backlit mirror and glass-top drawers showing organized luxury makeup collections. Golden frame and trim." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2jqM8L-zwgRnBJaBYL8sl3axIdwS-FHO8SNVHBfFHDxGaF2GiOjelXaFRp92lx-NIxaRR8U6wqY3gCAxeVn3lmfnqGsvV6HrIonDG_DovqYkjV1xrBXT_gUL_zubRMooJGbdw-4t9G_rmCMdQYOZSFnyoDCpDktLOvgbrjKcsJgAYsp8cLdGX2VS9Ivlm88sOmjt-HnMRp8kQR-p9i_KsFd8Y7oaYyJObQNGjiPHXBZatyu68v88hzg"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">تسريحة</span>
-      </div>
-
-      <!-- 14. Chiffonier -->
-      <div class="flex flex-col items-center group cursor-pointer">
-        <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="High-end wooden chiffonier chest of drawers with unique geometric carving and gold-dipped legs. Moody dark studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARl06JXmT9ivFVY-21_J2k1Ut2LGKR89CNC5qAzT5SaaXmbkMsZnpxlUqbsfY6mclGIkJg-gs0HWDIv-XAH8eyuXUm1mV9yhkb-DoFSB4bPiUU5iR3tg1c_qsLvyADJF9LAzzU2F7YyzYU9ioe--KQCvkFjbxN5taw3ozE-Za9SFC9XVCmfF-2CT3gwRHjG5SbGC3crIggPopbNss2WdUs2zh_5F0-Xnhas5CNZa9i45O90G2hC3wWlQ"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">شفونيرة</span>
-      </div>
-
-      <!-- 15. Comode -->
-      <div class="flex flex-col items-center group cursor-pointer">
-       <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full glass-card flex items-center justify-center p-1 group-hover:border-primary transition-all duration-500 gold-glow-hover overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden bg-surface-container-high">
-            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Matching set of luxury bedside commodes with marble tops and silent-close gold hardware. The background features a soft-focus textured wallpaper." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFZM1QmJ_8QQnulYOML6BNdmEpsRHe8M0UcregkP3sbNnksOipaQ_VyHAmrhHt4BeeBIa2AQDhbAjLaGZOSdqTTZuelQ-xdHZ4BtzTqZNJHMxbUS1YaApUoG3DHffj3k-j1QzMphnPRTZNuCgKR5Y3FSXcjcaGWxxNyvB0kbP-M9gyJZPmby32zLSEVb0cKx_N4JrvtyjA10n7STedM3hn1-z6bOk1Tfdzx5bpcj_j6CZaEncE1SBgaA"/>
-          </div>
-        </div>
-        <span class="mt-4 font-headline-lg text-headline-lg text-on-surface group-hover:text-primary transition-colors">كومود</span>
-      </div>
-    </section>
-
-    <!-- Newsletter / CTA -->
-    <section class="mt-32 glass-card rounded-3xl p-12 text-center relative overflow-hidden">
-      <div class="absolute inset-0 bg-primary/5 -z-10"></div>
-      <div class="max-w-xl mx-auto">
-        <span class="material-symbols-outlined text-primary text-6xl mb-6">workspace_premium</span>
-        <h2 class="font-display-lg text-headline-lg text-primary mb-6">نحن هنا من اجلكم </h2>
-        <p class="font-body-md text-on-surface-variant mb-10">كن أول من يعرف عن مجموعاتنا الجديدة والعروض الخاصة المصممة لأصحاب الذوق الرفيع.</p>
-        <div class="flex flex-col sm:flex-row gap-4">
-        
-        </div>
-      </div>
-    </section>
+      <header class="catalog-page__header">
+        <p class="catalog-eyebrow">كتالوج العمارى</p>
+        <h2 id="catalogTitle">أقسام الأثاث</h2>
+        <p id="catalogDescription" class="text-on-surface-variant">اختاري قسمًا لاستعراض التصميمات المتاحة.</p>
+      </header>
+      <p id="driveStatus" class="catalog-status text-on-surface-variant" role="status" aria-live="polite"></p>
+      <section id="catalogGrid" class="catalog-grid" aria-label="أقسام الأثاث"></section>
+      <section id="galleryGrid" class="gallery-grid" aria-label="تصميمات القسم" hidden></section>
+    </div>
   </main>
 
-  <div id="galleryModal" class="gallery-modal" hidden aria-hidden="true">
-    <div class="gallery-modal__backdrop" data-close-modal></div>
-    <div class="gallery-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle">
-      <button type="button" class="gallery-modal__close" data-close-modal aria-label="إغلاق">
-        <span class="material-symbols-outlined">close</span>
+  <div id="imageViewer" class="image-viewer" hidden aria-hidden="true">
+    <div class="image-viewer__backdrop" data-close-viewer></div>
+    <div class="image-viewer__dialog" role="dialog" aria-modal="true" aria-labelledby="imageViewerTitle">
+      <button type="button" class="image-viewer__close" data-close-viewer aria-label="إغلاق الصورة">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
       </button>
-      <div class="gallery-modal__header">
-        <h3 id="galleryModalTitle" class="font-display-lg text-headline-lg text-primary">الكتالوج</h3>
-        <p id="galleryModalSubtitle" class="font-body-md text-on-surface-variant">اختر فئة لعرض صورها</p>
+      <div class="image-viewer__header">
+        <h2 id="imageViewerTitle"></h2>
+        <p id="imageViewerCounter"></p>
       </div>
-      <div class="gallery-modal__stage">
-        <button type="button" class="gallery-modal__nav gallery-modal__nav--prev" data-nav="prev" aria-label="السابق">
-          <span class="material-symbols-outlined">chevron_right</span>
+      <div class="image-viewer__stage">
+        <button type="button" class="image-viewer__nav" data-viewer-nav="previous" aria-label="الصورة السابقة">
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
         </button>
-        <div class="gallery-modal__frame">
-          <img id="galleryModalImage" class="gallery-modal__image" src="" alt="" />
+        <div class="image-viewer__frame">
+          <img id="imageViewerImage" src="" alt="" />
+          <p id="imageViewerError" hidden>تعذر تحميل الصورة. يمكنك الرجوع إلى المعرض والمحاولة مرة أخرى.</p>
         </div>
-        <button type="button" class="gallery-modal__nav gallery-modal__nav--next" data-nav="next" aria-label="التالي">
-          <span class="material-symbols-outlined">chevron_left</span>
+        <button type="button" class="image-viewer__nav" data-viewer-nav="next" aria-label="الصورة التالية">
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
         </button>
       </div>
-      <div class="gallery-modal__footer">
-        <span id="galleryModalCounter" class="font-body-md text-on-surface-variant">1 / 1</span>
-      </div>
-      <div id="galleryModalThumbs" class="gallery-modal__thumbnails" aria-label="اختيار صورة"></div>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="w-full py-section-padding bg-surface-container-lowest border-t border-outline-variant/30">
-    <div class="max-w-container-max mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-12">
-      <a href="http://localhost:3000/admin/login" aria-label="دخول الإدارة" title="دخول الإدارة" class="text-on-surface-variant hover:text-primary transition-colors">
-        <span class="material-symbols-outlined text-xl">lock</span>
-      </a>
+    <div class="max-w-container-max mx-auto px-gutter flex justify-center items-center">
+      <p class="text-on-surface-variant">© العمارى للأثاث</p>
     </div>
   </footer>
 
-  <!-- Project scripts -->
-  <script src="scripts.js?v=3"></script>
+  <script src="drive-config.js?v=1"></script>
+  <script src="scripts.js?v=5"></script>
 </body>
 </html>
