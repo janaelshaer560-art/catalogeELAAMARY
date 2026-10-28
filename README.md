@@ -10,7 +10,7 @@
 4. الأقسام التي لا تحتوي أنواعًا فرعية، مثل `صالون` و`انتريه` و`ركنه`، يمكن رفع صورها مباشرة داخل مجلد القسم. ويمكن إنشاء مجلدات فرعية لها إذا رغبتِ في تقسيم التصميمات.
 5. لإضافة قسم رئيسي أو نوع أثاث جديد، أنشئي مجلدًا بالاسم المطلوب في المستوى المناسب؛ سيكتشفه الكتالوج تلقائيًا دون تعديل الكود. لإنشاء قسم رئيسي مستقل أضيفي مجلدًا داخل المجلد الرئيسي.
 6. اجعلي المجلد الرئيسي وجميع مجلدات الصور قابلة للعرض من **أي شخص لديه الرابط**.
-7. من Google Cloud Console، فعّلي Google Drive API وأنشئي مفتاح API. قيّديه بموقعي الاختبار والنشر: `http://localhost:8765/*` و`https://janaelshaer560-art.github.io/catalogeELAAMARY/*`، واجعلي Google Drive API الخدمة المسموح بها.
+7. من Google Cloud Console، فعّلي Google Drive API وأنشئي مفتاح API. قيّديه بعنوان موقع Vercel `https://elaamarycatalog.vercel.app/*`، وأضيفي `http://localhost:8765/*` إذا كنتِ تختبرين محليًا. اجعلي Google Drive API الخدمة المسموح بها.
 8. في GitHub، افتحي **Settings → Secrets and variables → Actions → New repository secret**، وسمّي السر `GOOGLE_DRIVE_API_KEY` والصقي فيه المفتاح الجديد. لا تضعي المفتاح في `drive-config.js` ولا ترفعيه في commit. ينشئ GitHub Actions ملف إعداد النشر باستخدام السر.
 9. افتحي الموقع عبر استضافة أو خادم محلي بعنوان `http://` أو `https://`؛ فتح `index.html` مباشرة كملف لا يعمل مع قيود نطاق مفتاح API.
 
@@ -18,4 +18,8 @@
 
 ## نشر GitHub Pages
 
-عنوان الموقع المتوقع هو `https://janaelshaer560-art.github.io/catalogeELAAMARY/`. يُنشر الموقع تلقائيًا عند كل تحديث على فرع `main` باستخدام `.github/workflows/deploy-pages.yml`. بعد إضافة `GOOGLE_DRIVE_API_KEY` إلى Actions Secrets، فعّلي **Settings → Pages → Build and deployment → Source: GitHub Actions**. المفتاح الناتج سيكون متاحًا داخل ملفات الموقع المنشور للمتصفح؛ لذلك يجب تقييده بنطاق GitHub Pages هذا وGoogle Drive API فقط.
+استخدام هذا المستودع مع GitHub Pages اختياري؛ موقع الإنتاج الحالي مستضاف على Vercel.
+
+## نشر Vercel
+
+إعداد `vercel.json` يشغّل `node build.js` ويستخدم `dist` كمجلد النشر. في مشروع Vercel المرتبط بالمستودع، أضيفي `GOOGLE_DRIVE_API_KEY` ضمن **Settings → Environment Variables** لبيئتي Production وPreview حسب الحاجة، ثم أعيدي النشر. ينشئ build ملف `drive-config.js` داخل مجلد النشر من متغير البيئة دون حفظ المفتاح في Git. المفتاح سيكون متاحًا لزوار الموقع من المتصفح؛ لذلك قيّديه بنطاق `https://elaamarycatalog.vercel.app/*` وبـ Google Drive API فقط.
