@@ -87,7 +87,12 @@ function folderItems(files) {
 }
 
 function imageItems(files) {
-  return files.filter(file => file.mimeType?.startsWith('image/'));
+  return files.filter(file => file.mimeType?.startsWith('image/') && !isCoverImage(file));
+}
+
+function isCoverImage(file) {
+  const imageName = file.name?.replace(/\.[^.]+$/, '').trim() || '';
+  return /^(?:_?cover|غلاف)$/i.test(imageName);
 }
 
 function imageUrl(file, size = 900) {
@@ -170,6 +175,9 @@ function addCover(container, file, altText) {
 }
 
 async function findCoverImage(folderId, files, depth = 2) {
+  const fixedCover = files.find(file => file.mimeType?.startsWith('image/') && isCoverImage(file));
+  if (fixedCover) return fixedCover;
+
   const directImage = imageItems(files)[0];
   if (directImage || depth === 0) return directImage || null;
 
@@ -193,7 +201,7 @@ async function makeFolderCard(folder, requestId) {
 
   const media = document.createElement('span');
   media.className = 'catalog-card__media';
-  const coverPromise = findCoverImage(folder.id, []);
+  const folderContents = loadFolderContents(folder.id);
   const title = document.createElement('span');
   title.className = 'catalog-card__title';
   title.textContent = folder.name;
@@ -204,9 +212,9 @@ async function makeFolderCard(folder, requestId) {
   card.addEventListener('click', () => navigateTo([...currentPath, { id: folder.id, name: folder.name }]));
 
   try {
-    const files = await loadFolderContents(folder.id);
+    const files = await folderContents;
     if (requestId !== routeRequestId) return card;
-    const cover = await coverPromise;
+    const cover = await findCoverImage(folder.id, files);
     if (requestId !== routeRequestId) return card;
     addCover(media, cover, `صورة توضيحية لقسم ${folder.name}`);
     const count = imageItems(files).length;
